@@ -10,14 +10,16 @@ from .rabbitmq import RABBITMQ_URL
 
 logger = get_logger()
 broker = RabbitBroker(RABBITMQ_URL)
-app    = FastStream(broker)
+app = FastStream(broker)
 _faststream_run: Optional[asyncio.Task] = None
 
-@broker.subscriber("create", exchange='user-events')
-@broker.subscriber("update", exchange='user-events')
-@broker.subscriber("delete", exchange='user-events')
+
+@broker.subscriber("create", exchange="user-events")
+@broker.subscriber("update", exchange="user-events")
+@broker.subscriber("delete", exchange="user-events")
 async def handle_msg(msg: dict):
     logger.info(msg)
+
 
 async def on_start():
     logger.info("Start consumer")
@@ -26,6 +28,7 @@ async def on_start():
         _faststream_run = asyncio.create_task(app.run())
     except Exception as e:
         raise e
+
 
 async def on_stop():
     logger.info("Close consumer")
@@ -38,6 +41,7 @@ async def on_stop():
             pass
 
     await broker.close()
+
 
 @asynccontextmanager
 async def consumer_lifespan(*args):
