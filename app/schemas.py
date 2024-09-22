@@ -27,3 +27,21 @@ class UserEvent:
         self.event = event
         self.args = list(args)
         self.kwargs = kwargs
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'event': self.event,
+            'args': [deep_convert(arg) for arg in self.args],
+            'kwargs': {key: deep_convert(value) for key, value in self.kwargs.items()}
+        }
+
+def deep_convert(item: Any) -> Any:
+    if hasattr(item, 'to_dict'):
+        return deep_convert(item.to_dict())
+    elif isinstance(item, (list, tuple)):
+        return type(item)(deep_convert(i) for i in item)
+    elif isinstance(item, dict):
+        return {key: deep_convert(value) for key, value in item.items()}
+    else:
+        return str(item)
+
