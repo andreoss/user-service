@@ -71,7 +71,8 @@ class TraceIdMiddleware(AbstractMiddleware):
                 )
             headers = message.get("headers", [])
             headers.append(
-                (bytes(self.trace_id_header, "utf-8"), bytes(str(trace_id), "utf-8"))
+                (bytes(self.trace_id_header, "utf-8"),
+                 bytes(str(trace_id), "utf-8"))
             )
             message["headers"] = headers
             await send(message)
