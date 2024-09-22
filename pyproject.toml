@@ -16,6 +16,3 @@ msgspec = "^0.18.6"
 structlog = "^24"
 aio-pika = "^9.5.4"
 faststream = { extras = ["cli"], version = "^0.5.34" }
-
-pytest = "^8.4.1"
-pytest-asyncio = "^0.24.0"
