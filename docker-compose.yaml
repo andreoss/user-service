@@ -23,11 +23,16 @@ services:
     restart: always
     environment:
       TZ: 'UTC'
-      RABBITMQ_DEFAULT_USER: svc
-      RABBITMQ_DEFAULT_PASS: svc
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_VHOST: /
+    volumes:
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/conf.d/99-config.conf
     ports:
       - "5672:5672"    
       - "15672:15672" 
+
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "status"]
       interval: 30s
