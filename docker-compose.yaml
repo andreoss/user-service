@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+       TZ: 'UTC'
+       PGTZ: 'UTC'
+       POSTGRES_USER: svc
+       POSTGRES_PASSWORD: svc
+       POSTGRES_DB: svc
+       POSTGRES_HOST_AUTH_METHOD: trust
+    command: postgres -c 'max_connections=1000'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U svc -d svc"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "5432:5432"
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    environment:
+      TZ: 'UTC'
+      RABBITMQ_DEFAULT_USER: svc
+      RABBITMQ_DEFAULT_PASS: svc
+    ports:
+      - "5672:5672"    
+      - "15672:15672" 
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
