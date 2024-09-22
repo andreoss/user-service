@@ -5,7 +5,11 @@ from litestar.plugins.structlog import StructlogPlugin
 
 from .controllers import UserController
 from .schemas import User
+
 from .middleware import TraceIdMiddleware, MeasureExecutionTimeMiddleware
+
+from .consumer import consumer_lifespan
+
 from advanced_alchemy.extensions.litestar import (
     AsyncSessionConfig,
     SQLAlchemyAsyncConfig,
@@ -25,6 +29,7 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://svc:svc@localhost
 
 app = Litestar(
     route_handlers=[UserController],
+    lifespan=[consumer_lifespan],
     middleware=[MeasureExecutionTimeMiddleware, TraceIdMiddleware],
     plugins=[
         StructlogPlugin(),

@@ -7,8 +7,8 @@ broker = RabbitBroker("amqp://guest:guest@localhost:5672/")
 
 app = FastStream(broker)
 
-@broker.subscriber("created", exchange='user-events')
-@broker.subscriber("updated", exchange='user-events')
-@broker.subscriber("deleted", exchange='user-events')
+@broker.subscriber("create", exchange='user-events')
+@broker.subscriber("update", exchange='user-events')
+@broker.subscriber("delete", exchange='user-events')
 async def handle_msg(msg: dict):
     logger.info(msg)
