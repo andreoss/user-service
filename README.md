@@ -4,7 +4,7 @@
 
 ## Dependencies (Python)
 ```sh
-poetry install
+poetry --no-root install
 ```
 
 ## Dependencies (Infra)
